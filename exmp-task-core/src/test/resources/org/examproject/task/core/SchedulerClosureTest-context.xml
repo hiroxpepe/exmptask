@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:tx="http://www.springframework.org/schema/tx"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/tx
+        http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+    <context:annotation-config />
+
+    <bean id="instance"
+        class="org.examproject.task.core.SchedulerClosure">
+        <constructor-arg name="worker" ref="mockWorkerClosure" />
+        <constructor-arg name="job" ref="mockJobClosure" />
+    </bean>
+
+    <bean id="mockWorkerClosure"
+        class="org.examproject.task.core.mock.MockWorkerClosure">
+    </bean>
+    
+    <bean id="mockJobClosure"
+        class="org.examproject.task.core.mock.MockJobClosure">
+    </bean>
+
+    <bean id="argumentBeanFactory"
+        class="org.examproject.task.core.ArgumentBeanFactory"
+        scope="prototype">
+    </bean>
+
+    <bean id="stateBeanFactory"
+        class="org.examproject.task.core.StateBeanFactory"
+        scope="prototype">
+    </bean>
+
+    <bean id="paramBeanFactory"
+        class="org.examproject.task.core.ParamBeanFactory"
+        scope="prototype">
+    </bean>
+
+    <bean id="resultBeanFactory"
+        class="org.examproject.task.core.ResultBeanFactory"
+        scope="prototype">
+    </bean>
+
+</beans>
