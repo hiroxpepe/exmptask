@@ -13,7 +13,14 @@
     <context:annotation-config />
 
     <bean id="instance"
-        class="org.examproject.task.core.AsyncWorkerClosure">
+        class="org.examproject.task.core.Scheduler">
+        <constructor-arg name="argumentBeanFactory" ref="argumentBeanFactory" />
+        <constructor-arg name="stateBeanFactory" ref="stateBeanFactory" />
+        <constructor-arg name="paramBeanFactory" ref="paramBeanFactory" />
+        <constructor-arg name="resultBeanFactory" ref="resultBeanFactory" />
+        <constructor-arg name="objectListFactory" ref="simpleObjectListFactory" />
+        <constructor-arg name="worker" ref="mockWorkerClosure" />
+        <constructor-arg name="job" ref="mockJobClosure" />
     </bean>
 
     <bean id="argumentBeanFactory"
@@ -31,17 +38,22 @@
     <bean id="resultBeanFactory"
         class="org.examproject.task.core.ResultBeanFactory">
     </bean>
-
+    
     <bean id="simpleObjectListFactory"
         class="org.examproject.task.core.SimpleObjectListFactory">
         <constructor-arg name="objectList" ref="objectList" />
     </bean>
-
-    <!-- mock -->
-    <bean id="mockJob"
+    
+    <!-- mock job -->
+    
+    <bean id="mockWorkerClosure"
+        class="org.examproject.task.core.mock.MockWorkerClosure">
+    </bean>
+    
+    <bean id="mockJobClosure"
         class="org.examproject.task.core.mock.MockJobClosure">
     </bean>
-
+    
     <bean id="objectList"
         class="java.util.ArrayList">
         <constructor-arg>

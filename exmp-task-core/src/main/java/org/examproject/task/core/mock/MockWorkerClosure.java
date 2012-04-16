@@ -28,6 +28,9 @@ public class MockWorkerClosure  implements Closure {
         MockWorkerClosure.class
     );
 
+    ///////////////////////////////////////////////////////////////////////////
+    // public methods
+    
     @Override
     public void execute(Object o) {
         LOG.info("called.");

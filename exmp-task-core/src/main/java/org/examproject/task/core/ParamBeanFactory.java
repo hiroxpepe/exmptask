@@ -35,6 +35,9 @@ public class ParamBeanFactory implements Factory {
         ParamBeanFactory.class
     );
     
+    ///////////////////////////////////////////////////////////////////////////
+    // public methods
+    
     @Override
     public Object create() {
         LOG.debug("called.");

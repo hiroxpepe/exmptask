@@ -4,7 +4,6 @@ package org.examproject.task.core;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.commons.collections.Closure;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -22,16 +21,16 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class SchedulerClosureTest {
+public class SchedulerTest {
 
     @Inject
     private ApplicationContext context;
 
     @Inject
     @Named(value="instance")
-    private Closure instance;
+    private Runnable instance;
 
-    public SchedulerClosureTest() {
+    public SchedulerTest() {
     }
 
     @BeforeClass
@@ -51,9 +50,9 @@ public class SchedulerClosureTest {
     }
 
     @Test
-    public void testExecute() {
-        System.out.println("execute");
-        instance.execute(null);
+    public void testRun() {
+        System.out.println("run");
+        instance.run();
     }
 
 }

@@ -15,13 +15,15 @@
 package org.examproject.task.core;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
-import javax.inject.Named;
 
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.collections.Closure;
 import org.apache.commons.collections.Factory;
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
@@ -31,30 +33,24 @@ import org.springframework.stereotype.Service;
  * @author hiroxpepe
  */
 @Service
-public class SchedulerClosure implements Closure {
+public class Scheduler implements Runnable {
 
     private final Log LOG = LogFactory.getLog(
-        SchedulerClosure.class
+        Scheduler.class
     );
 
     @Inject
     private final ApplicationContext context = null;
 
-    @Inject
-    @Named(value="argumentBeanFactory")
-    private Factory argumentBeanFactory;
+    private final Factory argumentBeanFactory;
     
-    @Inject
-    @Named(value="stateBeanFactory")
-    private Factory stateBeanFactory;
+    private final Factory stateBeanFactory;
 
-    @Inject
-    @Named(value="paramBeanFactory")
-    private Factory paramBeanFactory;
+    private final Factory paramBeanFactory;
     
-    @Inject
-    @Named(value="resultBeanFactory")
-    private Factory resultBeanFactory;
+    private final Factory resultBeanFactory;
+    
+    private final Factory objectListFactory;
     
     private final Closure worker;
 
@@ -75,10 +71,20 @@ public class SchedulerClosure implements Closure {
     ///////////////////////////////////////////////////////////////////////////
     // constructor
 
-    public SchedulerClosure(
+    public Scheduler(
+        Factory argumentBeanFactory,
+        Factory stateBeanFactory,
+        Factory paramBeanFactory,
+        Factory resultBeanFactory,
+        Factory objectListFactory,
         Closure worker,
         Closure job
     ) {
+        this.argumentBeanFactory = argumentBeanFactory;
+        this.stateBeanFactory = stateBeanFactory;
+        this.paramBeanFactory = paramBeanFactory;
+        this.resultBeanFactory = resultBeanFactory;
+        this.objectListFactory = objectListFactory;
         this.worker = worker;
         this.job = job;
     }
@@ -87,10 +93,13 @@ public class SchedulerClosure implements Closure {
     // public methods
 
     @Override
-    public void execute(Object o) {
+    public void run() {
         LOG.debug("called.");
         try {
-            LOG.info("▼▼ beginning scheduler.");
+            LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> scheduler begin.");
+            
+            StopWatch stopWatch = new StopWatch();
+            stopWatch.start();
             
             // initialize the fields. 
             init();
@@ -108,11 +117,16 @@ public class SchedulerClosure implements Closure {
                 argument
             );
             
-            LOG.info("▲▲ completed scheduler.");
+            stopWatch.stop();
+            LOG.info("execute time: " + stopWatch.getTime() + " msec");
+            
+            LOG.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< scheduler end.");
             
         } catch (Exception e) {
-            LOG.info("▲▲ error scheduler.");
+            LOG.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< scheduler error.");
             LOG.error("exception occurred. " + e.getMessage());
+            
+            // TODO: final strategy of the error!
             throw new RuntimeException(e);
         }
     }
@@ -130,6 +144,13 @@ public class SchedulerClosure implements Closure {
         state = (DynaBean) stateBeanFactory.create();
         param = (DynaBean) paramBeanFactory.create();
         result = (DynaBean) resultBeanFactory.create();
+        
+        // get the object list.
+        List objectList = (List) objectListFactory.create();
+        
+        // set the object list to map.
+        Map<String, Object> values = (Map<String, Object>) param.get("values");
+        values.put("objectList", objectList);
         
         // set the parameter to the beans.
         state.set("param", param);

@@ -33,6 +33,9 @@ public class AsyncWorkerClosure implements Closure {
         AsyncWorkerClosure.class
     );
 
+    ///////////////////////////////////////////////////////////////////////////
+    // public methods
+    
     @Async
     @Override
     public void execute(Object o) {

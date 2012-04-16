@@ -14,13 +14,16 @@
 
 package org.examproject.task.service;
 
+import java.util.List;
+import java.util.Map;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.collections.Closure;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.examproject.task.dto.HogeDto;
 
 /**
- * the simple moke class.
+ * a simple moke class.
  * @author hiroxpepe
  */
 public class HogeClosure implements Closure {
@@ -29,30 +32,40 @@ public class HogeClosure implements Closure {
         HogeClosure.class
     );
 
-    private final String waitTime;
-
-    public HogeClosure (String waitTime) {
-        LOG.debug("called.");
-        
-        this.waitTime = waitTime;
-        LOG.info("waitTime : " + waitTime);
-    }
-
+    ///////////////////////////////////////////////////////////////////////////
+    // public methods
+    
     @Override
-    public void execute(final Object o) {
+    public void execute(Object o) {
         LOG.debug("called.");
         try{
             // the argument object is dynabean object.
             DynaBean state = (DynaBean) o;
+            if (state == null) {
+                LOG.warn("state is null.");
+                return;
+            }
+            
+            // get the value map from the param object.
+            DynaBean param = (DynaBean) state.get("param");
+            Map<String, HogeDto> values = (Map<String, HogeDto>) param.get("values");
+            
+            // get the object list.
+            List<HogeDto> objectList = (List<HogeDto>) values.get("objectList");
             
             // mock task..
-            Thread.sleep(
-                Long.parseLong(waitTime)
-            );
+            for (HogeDto dto : objectList) {
+                LOG.info("waitTime: " + dto.getWaitTime().toString());
+                Thread.sleep(
+                    Long.parseLong(dto.getWaitTime())
+                );
+                LOG.info(dto.getName() + " ok.");
+            }
+            
         } catch (Exception e) {
             LOG.error("error: " + e.getMessage());
             throw new RuntimeException(e);
         }
-        LOG.info("hoge ok.");
+
     }
 }

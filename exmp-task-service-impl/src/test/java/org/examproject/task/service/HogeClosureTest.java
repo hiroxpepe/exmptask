@@ -32,7 +32,7 @@ public class HogeClosureTest {
     public void testExecute() {
         System.out.println("execute");
         Object o = null;
-        HogeClosure instance = new HogeClosure("1");
+        HogeClosure instance = new HogeClosure();
         instance.execute(o);
     }
 }

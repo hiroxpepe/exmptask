@@ -33,6 +33,9 @@ public class ArgumentBeanFactory implements Factory {
         ArgumentBeanFactory.class
     );
 
+    ///////////////////////////////////////////////////////////////////////////
+    // public methods
+    
     @Override
     public Object create() {
         LOG.debug("called.");

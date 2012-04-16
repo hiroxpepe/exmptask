@@ -12,6 +12,6 @@
 
     <import resource="mvc-config.xml" />
 
-    <import resource="user/exmp-task-service-impl-config.xml"/>
+    <import resource="user/exmp-task-config.xml"/>
 
 </beans>

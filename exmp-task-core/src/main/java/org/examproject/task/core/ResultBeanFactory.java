@@ -35,6 +35,9 @@ public class ResultBeanFactory implements Factory {
         ResultBeanFactory.class
     );
     
+    ///////////////////////////////////////////////////////////////////////////
+    // public methods
+    
     @Override
     public Object create() {
         LOG.debug("called.");

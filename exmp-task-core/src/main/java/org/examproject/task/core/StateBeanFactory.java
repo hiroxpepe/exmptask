@@ -32,6 +32,9 @@ public class StateBeanFactory implements Factory {
         StateBeanFactory.class
     );
 
+    ///////////////////////////////////////////////////////////////////////////
+    // public methods
+    
     @Override
     public Object create() {
         LOG.debug("called.");
