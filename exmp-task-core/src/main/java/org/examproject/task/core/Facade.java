@@ -17,6 +17,7 @@ package org.examproject.task.core;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
@@ -66,7 +67,7 @@ public class Facade implements Runnable {
             
     private DynaBean state;
 
-    private DynaBean param;
+//    private DynaBean param;
             
     private DynaBean result;
     
@@ -110,20 +111,32 @@ public class Facade implements Runnable {
             
             LOG.info("processing at " + new Date());
             
-            while (!isItemEmpty()) {
-                // set the execute counts.
+            List<Runnable> workerList = new CopyOnWriteArrayList<Runnable>();
+            for (int i = 0; i < objectList.size(); i++) {
+                
+                // set the execute count.
                 argument.set(
                     "count",
                     counter.incrementAndGet()
                 );
                 
+                state.set(
+                    "param",
+                    getParam()
+                );
+                
+                // two arg is need.. 
                 Runnable worker = (Runnable) context.getBean(
                     workerBeanId,
                     argument
                 );
                 
+                workerList.add(worker);
+            }
+            
+            for (int j = 0; j < workerList.size(); j++) {
                 executor.execute(
-                    worker
+                    workerList.get(j)
                 );
             }
            
@@ -149,14 +162,12 @@ public class Facade implements Runnable {
         // create the beans of application use. 
         argument = (DynaBean) argumentBeanFactory.create();
         state = (DynaBean) stateBeanFactory.create();
-        param = (DynaBean) paramBeanFactory.create();
         result = (DynaBean) resultBeanFactory.create();
         
         // get the object list.
         objectList = (List) objectListFactory.create();
         
         // set the parameter to the beans.
-        state.set("param", param);
         state.set("result", result);
         argument.set("job",job);
         argument.set("state",state);
@@ -165,20 +176,20 @@ public class Facade implements Runnable {
         isInit = true;
     }
     
-    private boolean isItemEmpty() {
-        
-        if (objectList.isEmpty()) {
-            return true;
-        }
+    ///////////////////////////////////////////////////////////////////////////
+    // private methods
+    
+    private DynaBean getParam() {
         
         // get the current object.
         Object o = objectList.remove(0);
                 
         //set the object to map.
+        DynaBean param = (DynaBean) paramBeanFactory.create();
         Map<String, Object> values = (Map<String, Object>) param.get("values");
         values.put("item", o);
         
-        return false;
+        return param;
     }
     
 }
