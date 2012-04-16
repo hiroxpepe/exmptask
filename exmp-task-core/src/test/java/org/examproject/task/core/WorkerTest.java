@@ -25,14 +25,12 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class AsyncWorkerClosureTest {
+public class WorkerTest {
 
     @Inject
     private ApplicationContext context;
 
-    @Inject
-    @Named(value="instance")
-    private Closure instance;
+    private Runnable instance;
 
     @Inject
     @Named(value="argumentBeanFactory")
@@ -54,7 +52,7 @@ public class AsyncWorkerClosureTest {
     @Named(value="mockJob")
     private Closure job;
 
-    public AsyncWorkerClosureTest() {
+    public WorkerTest() {
     }
 
     @BeforeClass
@@ -90,7 +88,8 @@ public class AsyncWorkerClosureTest {
         argument.set("job", job);
         argument.set("state", state);
 
-        instance.execute(argument);
+        instance = (Runnable) context.getBean("instance", argument);
+        instance.run();
     }
 
 }

@@ -22,21 +22,28 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author hiroxpepe
  */
-public class MockWorkerClosure  implements Closure {
+public class MockWorker implements Runnable {
 
     private final Log LOG = LogFactory.getLog(
-        MockWorkerClosure.class
+        MockWorker.class
     );
 
+    private final DynaBean argument;
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // constructor
+
+    public MockWorker(DynaBean argument) {
+        this.argument = argument;
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
     // public methods
     
     @Override
-    public void execute(Object o) {
+    public void run() {
         LOG.info("called.");
         try {
-            // argument object argument
-            DynaBean argument = (DynaBean) o;
             
             // get the state object from the parameter.
             DynaBean state = (DynaBean) argument.get(

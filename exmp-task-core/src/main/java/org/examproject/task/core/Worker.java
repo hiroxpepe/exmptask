@@ -18,7 +18,6 @@ import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.collections.Closure;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
 
 /**
@@ -27,22 +26,28 @@ import org.springframework.stereotype.Component;
  * @author hiroxpepe
  */
 @Component
-public class AsyncWorkerClosure implements Closure {
+public class Worker implements Runnable {
 
     private final Log LOG = LogFactory.getLog(
-        AsyncWorkerClosure.class
+        Worker.class
     );
 
+    private final DynaBean argument;
+    
+    ///////////////////////////////////////////////////////////////////////////
+    // constructor
+
+    public Worker(DynaBean argument) {
+        this.argument = argument;
+    }
+    
     ///////////////////////////////////////////////////////////////////////////
     // public methods
     
-    @Async
     @Override
-    public void execute(Object o) {
+    public void run() {
+        
         LOG.debug("called.");
-
-        // the argument object.
-        DynaBean argument = (DynaBean) o;
 
         // get the object from argument object.
         Closure job = (Closure) argument.get("job");

@@ -14,22 +14,36 @@
 
     <context:component-scan base-package="org.examproject" />
 
+    <!-- single task -->
+    <bean id="taskExecutor" 
+        class="org.springframework.core.task.SyncTaskExecutor">
+    </bean>
+
+    <!-- thread pool task -->
+<!--    <bean id="taskExecutor"
+        class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5" />
+        <property name="maxPoolSize" value="10" />
+        <property name="queueCapacity" value="25" />
+    </bean>-->
+
     <task:scheduled-tasks>
         <task:scheduled
-            ref="scheduler"
+            ref="facade"
             method="run"
             cron="*/10 * * * * ?"
         />
     </task:scheduled-tasks>
 
-    <bean id="scheduler"
-        class="org.examproject.task.core.Scheduler">
+    <bean id="facade"
+        class="org.examproject.task.core.Facade"
+        init-method="init">
         <constructor-arg name="argumentBeanFactory" ref="argumentBeanFactory" />
         <constructor-arg name="stateBeanFactory" ref="stateBeanFactory" />
         <constructor-arg name="paramBeanFactory" ref="paramBeanFactory" />
         <constructor-arg name="resultBeanFactory" ref="resultBeanFactory" />
         <constructor-arg name="objectListFactory" ref="simpleObjectListFactory" />
-        <constructor-arg name="worker" ref="workerClosure" />
+        <constructor-arg name="workerBeanId" value="worker" />
         <constructor-arg name="job" ref="chainedClosure" />
     </bean>
 
@@ -54,8 +68,9 @@
         <constructor-arg name="objectList" ref="objectList" />
     </bean>
 
-    <bean id="workerClosure"
-        class="org.examproject.task.core.AsyncWorkerClosure">
+    <bean id="worker"
+        class="org.examproject.task.core.Worker"
+        scope="prototype">
     </bean>
     
     <!-- mock -->
@@ -74,11 +89,14 @@
     </bean>
 
     <bean id="objectList"
-        class="java.util.ArrayList">
+        class="java.util.concurrent.CopyOnWriteArrayList">
         <constructor-arg>
             <list value-type="org.examproject.task.dto.HogeDto">
                 <ref bean="hogeDto1" />
                 <ref bean="hogeDto2" />
+                <ref bean="hogeDto3" />
+                <ref bean="hogeDto4" />
+                <ref bean="hogeDto5" />
             </list>
         </constructor-arg>
     </bean>
@@ -87,14 +105,35 @@
         class="org.examproject.task.dto.HogeDto"
         scope="prototype">
         <property name="name" value="hoge1" />
-        <property name="waitTime" value="1000" />
+        <property name="waitTime" value="5000" />
     </bean>
 
     <bean id="hogeDto2"
         class="org.examproject.task.dto.HogeDto"
         scope="prototype">
         <property name="name" value="hoge2" />
-        <property name="waitTime" value="2000" />
+        <property name="waitTime" value="500" />
+    </bean>
+    
+    <bean id="hogeDto3"
+        class="org.examproject.task.dto.HogeDto"
+        scope="prototype">
+        <property name="name" value="hoge3" />
+        <property name="waitTime" value="1000" />
+    </bean>
+    
+    <bean id="hogeDto4"
+        class="org.examproject.task.dto.HogeDto"
+        scope="prototype">
+        <property name="name" value="hoge4" />
+        <property name="waitTime" value="2500" />
+    </bean>
+    
+    <bean id="hogeDto5"
+        class="org.examproject.task.dto.HogeDto"
+        scope="prototype">
+        <property name="name" value="hoge5" />
+        <property name="waitTime" value="500" />
     </bean>
 
 </beans>

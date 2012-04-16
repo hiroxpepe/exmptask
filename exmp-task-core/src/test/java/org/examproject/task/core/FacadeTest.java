@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class SchedulerTest {
+public class FacadeTest {
 
     @Inject
     private ApplicationContext context;
@@ -30,7 +30,7 @@ public class SchedulerTest {
     @Named(value="instance")
     private Runnable instance;
 
-    public SchedulerTest() {
+    public FacadeTest() {
     }
 
     @BeforeClass

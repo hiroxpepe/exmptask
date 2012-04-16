@@ -17,6 +17,7 @@ package org.examproject.task.core;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
 
@@ -33,14 +34,17 @@ import org.springframework.stereotype.Service;
  * @author hiroxpepe
  */
 @Service
-public class Scheduler implements Runnable {
+public class Facade implements Runnable {
 
     private final Log LOG = LogFactory.getLog(
-        Scheduler.class
+        Facade.class
     );
 
     @Inject
     private final ApplicationContext context = null;
+    
+    @Inject
+    private final Executor executor = null;
 
     private final Factory argumentBeanFactory;
     
@@ -52,7 +56,7 @@ public class Scheduler implements Runnable {
     
     private final Factory objectListFactory;
     
-    private final Closure worker;
+    private final String workerBeanId;
 
     private final Closure job;
 
@@ -65,19 +69,21 @@ public class Scheduler implements Runnable {
     private DynaBean param;
             
     private DynaBean result;
+    
+    private List objectList;
 
     private boolean isInit = false;
     
     ///////////////////////////////////////////////////////////////////////////
     // constructor
 
-    public Scheduler(
+    public Facade(
         Factory argumentBeanFactory,
         Factory stateBeanFactory,
         Factory paramBeanFactory,
         Factory resultBeanFactory,
         Factory objectListFactory,
-        Closure worker,
+        String workerBeanId,
         Closure job
     ) {
         this.argumentBeanFactory = argumentBeanFactory;
@@ -85,7 +91,7 @@ public class Scheduler implements Runnable {
         this.paramBeanFactory = paramBeanFactory;
         this.resultBeanFactory = resultBeanFactory;
         this.objectListFactory = objectListFactory;
-        this.worker = worker;
+        this.workerBeanId = workerBeanId;
         this.job = job;
     }
     
@@ -95,28 +101,32 @@ public class Scheduler implements Runnable {
     @Override
     public void run() {
         LOG.debug("called.");
+        
         try {
             LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> scheduler begin.");
             
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             
-            // initialize the fields. 
-            init();
-            
             LOG.info("processing at " + new Date());
             
-            // set the execute counts.
-            argument.set(
-                "count",
-                counter.incrementAndGet()
-            );
-            
-            // execute the worker object given the argument object.
-            worker.execute(
-                argument
-            );
-            
+            while (!isItemEmpty()) {
+                // set the execute counts.
+                argument.set(
+                    "count",
+                    counter.incrementAndGet()
+                );
+                
+                Runnable worker = (Runnable) context.getBean(
+                    workerBeanId,
+                    argument
+                );
+                
+                executor.execute(
+                    worker
+                );
+            }
+           
             stopWatch.stop();
             LOG.info("execute time: " + stopWatch.getTime() + " msec");
             
@@ -131,10 +141,7 @@ public class Scheduler implements Runnable {
         }
     }
     
-    ///////////////////////////////////////////////////////////////////////////
-    // private methods
-    
-    private void init() {
+    public void init() {
         if (isInit) {
             return;
         }
@@ -146,11 +153,7 @@ public class Scheduler implements Runnable {
         result = (DynaBean) resultBeanFactory.create();
         
         // get the object list.
-        List objectList = (List) objectListFactory.create();
-        
-        // set the object list to map.
-        Map<String, Object> values = (Map<String, Object>) param.get("values");
-        values.put("objectList", objectList);
+        objectList = (List) objectListFactory.create();
         
         // set the parameter to the beans.
         state.set("param", param);
@@ -161,4 +164,21 @@ public class Scheduler implements Runnable {
         // initialize function is executed only once.
         isInit = true;
     }
+    
+    private boolean isItemEmpty() {
+        
+        if (objectList.isEmpty()) {
+            return true;
+        }
+        
+        // get the current object.
+        Object o = objectList.remove(0);
+                
+        //set the object to map.
+        Map<String, Object> values = (Map<String, Object>) param.get("values");
+        values.put("item", o);
+        
+        return false;
+    }
+    
 }
