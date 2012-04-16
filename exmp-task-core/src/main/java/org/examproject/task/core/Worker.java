@@ -46,7 +46,6 @@ public class Worker implements Runnable {
     
     @Override
     public void run() {
-        
         LOG.debug("called.");
 
         // get the object from argument object.

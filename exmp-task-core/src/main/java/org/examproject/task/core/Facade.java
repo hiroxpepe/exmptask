@@ -15,6 +15,7 @@
 package org.examproject.task.core;
 
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -62,18 +63,10 @@ public class Facade implements Runnable {
     private final Closure job;
 
     private AtomicInteger counter = new AtomicInteger();
-    
-    private DynaBean argument;
-            
-    private DynaBean state;
-
-//    private DynaBean param;
             
     private DynaBean result;
     
-    private List objectList;
-
-    private boolean isInit = false;
+    private List<Object> objectList;
     
     ///////////////////////////////////////////////////////////////////////////
     // constructor
@@ -104,15 +97,27 @@ public class Facade implements Runnable {
         LOG.debug("called.");
         
         try {
-            LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> scheduler begin.");
-            
+            LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> facade begin.");
+            LOG.info("processing at " + new Date());
+          
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             
-            LOG.info("processing at " + new Date());
+            // initialize the bean for this run.
+            init();
             
+            // set the param for the worker object of the list.
             List<Runnable> workerList = new CopyOnWriteArrayList<Runnable>();
             for (int i = 0; i < objectList.size(); i++) {
+                    
+                DynaBean state = (DynaBean) stateBeanFactory.create();
+                state.set("result", result);
+                state.set("param", getParam());
+                
+                // set the parameter to the beans.
+                DynaBean argument = (DynaBean) argumentBeanFactory.create();
+                argument.set("job",job);
+                argument.set("state",state);
                 
                 // set the execute count.
                 argument.set(
@@ -120,12 +125,7 @@ public class Facade implements Runnable {
                     counter.incrementAndGet()
                 );
                 
-                state.set(
-                    "param",
-                    getParam()
-                );
-                
-                // two arg is need.. 
+                // set the argument object for worker object.
                 Runnable worker = (Runnable) context.getBean(
                     workerBeanId,
                     argument
@@ -134,19 +134,20 @@ public class Facade implements Runnable {
                 workerList.add(worker);
             }
             
-            for (int j = 0; j < workerList.size(); j++) {
+            // run the all of the worker object.
+            for (int i = 0; i < workerList.size(); i++) {
                 executor.execute(
-                    workerList.get(j)
+                    workerList.get(i)
                 );
             }
-           
-            stopWatch.stop();
-            LOG.info("execute time: " + stopWatch.getTime() + " msec");
             
-            LOG.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< scheduler end.");
+            stopWatch.stop();
+            
+            LOG.info("execute time: " + stopWatch.getTime() + " msec");  
+            LOG.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< facade end.");
             
         } catch (Exception e) {
-            LOG.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< scheduler error.");
+            LOG.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< facade error.");
             LOG.error("exception occurred. " + e.getMessage());
             
             // TODO: final strategy of the error!
@@ -154,30 +155,18 @@ public class Facade implements Runnable {
         }
     }
     
-    public void init() {
-        if (isInit) {
-            return;
-        }
+    ///////////////////////////////////////////////////////////////////////////
+    // private methods
+    
+    private void init() {
         
-        // create the beans of application use. 
-        argument = (DynaBean) argumentBeanFactory.create();
-        state = (DynaBean) stateBeanFactory.create();
+        // create the beans of result. 
         result = (DynaBean) resultBeanFactory.create();
         
         // get the object list.
-        objectList = (List) objectListFactory.create();
+        objectList = (List<Object>) objectListFactory.create();
         
-        // set the parameter to the beans.
-        state.set("result", result);
-        argument.set("job",job);
-        argument.set("state",state);
-        
-        // initialize function is executed only once.
-        isInit = true;
     }
-    
-    ///////////////////////////////////////////////////////////////////////////
-    // private methods
     
     private DynaBean getParam() {
         

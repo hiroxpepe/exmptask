@@ -14,8 +14,8 @@
 
 package org.examproject.task.core;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.beanutils.BasicDynaBean;
 import org.apache.commons.beanutils.BasicDynaClass;
@@ -64,7 +64,7 @@ public class ResultBeanFactory implements Factory {
             // create the values map.
             bean.set(
                 "values",
-                new HashMap<String, Object>()
+                new ConcurrentHashMap<String, Object>()
             );
             
             // return the dynabean object.

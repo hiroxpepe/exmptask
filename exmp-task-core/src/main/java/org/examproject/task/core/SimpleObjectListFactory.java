@@ -28,12 +28,12 @@ public class SimpleObjectListFactory implements Factory {
         SimpleObjectListFactory.class
     );
     
-    private final List objectList;
+    private final List<Object> objectList;
     
     ///////////////////////////////////////////////////////////////////////////
     // constructor
     
-    public SimpleObjectListFactory(List objectList) {
+    public SimpleObjectListFactory(List<Object> objectList) {
         this.objectList = objectList;
     }
     

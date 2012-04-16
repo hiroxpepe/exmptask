@@ -15,17 +15,17 @@
     <context:component-scan base-package="org.examproject" />
 
     <!-- single task -->
-    <bean id="taskExecutor" 
+<!--    <bean id="taskExecutor" 
         class="org.springframework.core.task.SyncTaskExecutor">
-    </bean>
+    </bean>-->
 
     <!-- thread pool task -->
-<!--    <bean id="taskExecutor"
+    <bean id="taskExecutor"
         class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
         <property name="corePoolSize" value="5" />
         <property name="maxPoolSize" value="10" />
         <property name="queueCapacity" value="25" />
-    </bean>-->
+    </bean>
 
     <task:scheduled-tasks>
         <task:scheduled
@@ -36,8 +36,7 @@
     </task:scheduled-tasks>
 
     <bean id="facade"
-        class="org.examproject.task.core.Facade"
-        init-method="init">
+        class="org.examproject.task.core.Facade">
         <constructor-arg name="argumentBeanFactory" ref="argumentBeanFactory" />
         <constructor-arg name="stateBeanFactory" ref="stateBeanFactory" />
         <constructor-arg name="paramBeanFactory" ref="paramBeanFactory" />
@@ -97,6 +96,11 @@
                 <ref bean="hogeDto3" />
                 <ref bean="hogeDto4" />
                 <ref bean="hogeDto5" />
+                <ref bean="hogeDto6" />
+                <ref bean="hogeDto7" />
+                <ref bean="hogeDto8" />
+                <ref bean="hogeDto9" />
+                <ref bean="hogeDto10" />
             </list>
         </constructor-arg>
     </bean>
@@ -133,6 +137,41 @@
         class="org.examproject.task.dto.HogeDto"
         scope="prototype">
         <property name="name" value="hoge5" />
+        <property name="waitTime" value="500" />
+    </bean>
+    
+    <bean id="hogeDto6"
+        class="org.examproject.task.dto.HogeDto"
+        scope="prototype">
+        <property name="name" value="hoge6" />
+        <property name="waitTime" value="5000" />
+    </bean>
+
+    <bean id="hogeDto7"
+        class="org.examproject.task.dto.HogeDto"
+        scope="prototype">
+        <property name="name" value="hoge7" />
+        <property name="waitTime" value="500" />
+    </bean>
+    
+    <bean id="hogeDto8"
+        class="org.examproject.task.dto.HogeDto"
+        scope="prototype">
+        <property name="name" value="hoge8" />
+        <property name="waitTime" value="1000" />
+    </bean>
+    
+    <bean id="hogeDto9"
+        class="org.examproject.task.dto.HogeDto"
+        scope="prototype">
+        <property name="name" value="hoge9" />
+        <property name="waitTime" value="2500" />
+    </bean>
+    
+    <bean id="hogeDto10"
+        class="org.examproject.task.dto.HogeDto"
+        scope="prototype">
+        <property name="name" value="hoge10" />
         <property name="waitTime" value="500" />
     </bean>
 

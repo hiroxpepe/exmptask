@@ -21,8 +21,7 @@
     </bean>
 
     <bean id="instance"
-        class="org.examproject.task.core.Facade"
-        init-method="init">
+        class="org.examproject.task.core.Facade">
         <constructor-arg name="argumentBeanFactory" ref="argumentBeanFactory" />
         <constructor-arg name="stateBeanFactory" ref="stateBeanFactory" />
         <constructor-arg name="paramBeanFactory" ref="paramBeanFactory" />
