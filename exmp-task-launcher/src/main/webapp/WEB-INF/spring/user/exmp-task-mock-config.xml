@@ -2,92 +2,19 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xmlns:context="http://www.springframework.org/schema/context"
-    xmlns:task="http://www.springframework.org/schema/task"
     xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
-        http://www.springframework.org/schema/task
-        http://www.springframework.org/schema/task/spring-task-3.1.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.1.xsd">
-
-    <context:annotation-config />
-
-    <context:component-scan base-package="org.examproject" />
-
-    <!-- single task -->
-<!--    <bean id="taskExecutor" 
-        class="org.springframework.core.task.SyncTaskExecutor">
-    </bean>-->
-
-    <!-- thread pool task -->
-    <bean id="taskExecutor"
-        class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
-        <property name="corePoolSize" value="5" />
-        <property name="maxPoolSize" value="10" />
-        <property name="queueCapacity" value="25" />
-    </bean>
-
-    <task:scheduled-tasks>
-        <task:scheduled
-            ref="facade"
-            method="run"
-            cron="*/10 * * * * ?"
-        />
-    </task:scheduled-tasks>
-
-    <bean id="facade"
-        class="org.examproject.task.core.Facade">
-        <constructor-arg name="argumentBeanFactory" ref="argumentBeanFactory" />
-        <constructor-arg name="stateBeanFactory" ref="stateBeanFactory" />
-        <constructor-arg name="paramBeanFactory" ref="paramBeanFactory" />
-        <constructor-arg name="resultBeanFactory" ref="resultBeanFactory" />
-        <constructor-arg name="objectListFactory" ref="simpleObjectListFactory" />
-        <constructor-arg name="workerBeanId" value="worker" />
-        <constructor-arg name="job" ref="chainedClosure" />
-    </bean>
-
-    <bean id="argumentBeanFactory"
-        class="org.examproject.task.core.ArgumentBeanFactory">
-    </bean>
-
-    <bean id="stateBeanFactory"
-        class="org.examproject.task.core.StateBeanFactory">
-    </bean>
-
-    <bean id="paramBeanFactory"
-        class="org.examproject.task.core.ParamBeanFactory">
-    </bean>
-
-    <bean id="resultBeanFactory"
-        class="org.examproject.task.core.ResultBeanFactory">
-    </bean>
     
-    <bean id="simpleObjectListFactory"
-        class="org.examproject.task.core.SimpleObjectListFactory">
-        <constructor-arg name="objectList" ref="objectList" />
-    </bean>
-
-    <bean id="worker"
-        class="org.examproject.task.core.Worker"
-        scope="prototype">
-    </bean>
+    <!-- mock content -->
     
-    <!-- mock -->
-
-    <bean id="chainedClosure"
-        class="org.apache.commons.collections.functors.ChainedClosure">
-        <constructor-arg>
-            <list value-type="java.util.ArrayList">
-                <ref bean="hogeClosure" />
-            </list>
-        </constructor-arg>
+    <bean id="mockContentListFactory"
+        class="org.examproject.task.core.mock.MockContentListFactory">
+        <constructor-arg name="contentList" ref="contentList" />
     </bean>
 
-    <bean id="hogeClosure"
-        class="org.examproject.task.service.HogeClosure">
-    </bean>
-
-    <bean id="objectList"
+    <bean id="contentList"
         class="java.util.concurrent.CopyOnWriteArrayList">
         <constructor-arg>
             <list value-type="org.examproject.task.dto.HogeDto">

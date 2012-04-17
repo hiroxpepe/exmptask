@@ -17,7 +17,7 @@ package org.examproject.task.core.mock;
 /**
  * @author hiroxpepe
  */
-public class MockObject {
+public class MockContent {
     
     private String name;
 

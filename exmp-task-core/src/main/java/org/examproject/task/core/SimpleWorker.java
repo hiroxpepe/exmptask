@@ -18,18 +18,20 @@ import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.collections.Closure;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
 /**
- * the worker object is only to run the job object.
+ * a worker object is only to run the job object.
  * 
  * @author hiroxpepe
  */
-@Component
-public class Worker implements Runnable {
+@Component(value="simpleWorker")
+@Scope(value="prototype")
+public class SimpleWorker implements Runnable {
 
     private final Log LOG = LogFactory.getLog(
-        Worker.class
+        SimpleWorker.class
     );
 
     private final DynaBean argument;
@@ -37,7 +39,11 @@ public class Worker implements Runnable {
     ///////////////////////////////////////////////////////////////////////////
     // constructor
 
-    public Worker(DynaBean argument) {
+    public SimpleWorker() {
+        argument = null;
+    }
+    
+    public SimpleWorker(DynaBean argument) {
         this.argument = argument;
     }
     
@@ -47,6 +53,10 @@ public class Worker implements Runnable {
     @Override
     public void run() {
         LOG.debug("called.");
+        if (argument == null) {
+            LOG.warn("argument is null.");
+            return;
+        }
 
         // get the object from argument object.
         Closure job = (Closure) argument.get("job");

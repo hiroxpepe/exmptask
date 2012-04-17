@@ -25,7 +25,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration
-public class WorkerTest {
+public class SimpleWorkerTest {
 
     @Inject
     private ApplicationContext context;
@@ -52,7 +52,7 @@ public class WorkerTest {
     @Named(value="mockJob")
     private Closure job;
 
-    public WorkerTest() {
+    public SimpleWorkerTest() {
     }
 
     @BeforeClass

@@ -56,7 +56,7 @@ public class Facade implements Runnable {
     
     private final Factory resultBeanFactory;
     
-    private final Factory objectListFactory;
+    private final Factory contentListFactory;
     
     private final String workerBeanId;
 
@@ -66,7 +66,7 @@ public class Facade implements Runnable {
             
     private DynaBean result;
     
-    private List<Object> objectList;
+    private List<Object> contentList;
     
     ///////////////////////////////////////////////////////////////////////////
     // constructor
@@ -76,7 +76,7 @@ public class Facade implements Runnable {
         Factory stateBeanFactory,
         Factory paramBeanFactory,
         Factory resultBeanFactory,
-        Factory objectListFactory,
+        Factory contentListFactory,
         String workerBeanId,
         Closure job
     ) {
@@ -84,8 +84,35 @@ public class Facade implements Runnable {
         this.stateBeanFactory = stateBeanFactory;
         this.paramBeanFactory = paramBeanFactory;
         this.resultBeanFactory = resultBeanFactory;
-        this.objectListFactory = objectListFactory;
+        this.contentListFactory = contentListFactory;
         this.workerBeanId = workerBeanId;
+        this.job = job;
+    }
+    
+    public Facade(
+        Factory contentListFactory,
+        String workerBeanId,
+        Closure job
+    ) {
+        this.argumentBeanFactory = new ArgumentBeanFactory();
+        this.stateBeanFactory = new StateBeanFactory();
+        this.paramBeanFactory = new ParamBeanFactory();
+        this.resultBeanFactory = new ResultBeanFactory();
+        this.contentListFactory = contentListFactory;
+        this.workerBeanId = workerBeanId;
+        this.job = job;
+    }
+    
+    public Facade(
+        Factory contentListFactory,
+        Closure job
+    ) {
+        this.argumentBeanFactory = new ArgumentBeanFactory();
+        this.stateBeanFactory = new StateBeanFactory();
+        this.paramBeanFactory = new ParamBeanFactory();
+        this.resultBeanFactory = new ResultBeanFactory();
+        this.contentListFactory = contentListFactory;
+        this.workerBeanId = "simpleWorker";
         this.job = job;
     }
     
@@ -108,7 +135,7 @@ public class Facade implements Runnable {
             
             // set the param for the worker object of the list.
             List<Runnable> workerList = new CopyOnWriteArrayList<Runnable>();
-            for (int i = 0; i < objectList.size(); i++) {
+            for (int i = 0; i < contentList.size(); i++) {
                     
                 DynaBean state = (DynaBean) stateBeanFactory.create();
                 state.set("result", result);
@@ -163,20 +190,19 @@ public class Facade implements Runnable {
         // create the beans of result. 
         result = (DynaBean) resultBeanFactory.create();
         
-        // get the object list.
-        objectList = (List<Object>) objectListFactory.create();
-        
+        // get the content object list.
+        contentList = (List<Object>) contentListFactory.create();
     }
     
     private DynaBean getParam() {
         
-        // get the current object.
-        Object o = objectList.remove(0);
-                
-        //set the object to map.
+        // get the content object of the current.
+        Object o = contentList.remove(0);
+        
+        // set the object to map.
         DynaBean param = (DynaBean) paramBeanFactory.create();
         Map<String, Object> values = (Map<String, Object>) param.get("values");
-        values.put("item", o);
+        values.put("content", o);
         
         return param;
     }

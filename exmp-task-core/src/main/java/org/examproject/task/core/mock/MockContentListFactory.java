@@ -12,7 +12,7 @@
  * limitations under the License.
  */
 
-package org.examproject.task.core;
+package org.examproject.task.core.mock;
 
 import java.util.List;
 import org.apache.commons.collections.Factory;
@@ -22,19 +22,19 @@ import org.apache.commons.logging.LogFactory;
 /**
  * @author hiroxpepe
  */
-public class SimpleObjectListFactory implements Factory {
+public class MockContentListFactory implements Factory {
     
     private final Log LOG = LogFactory.getLog(
-        SimpleObjectListFactory.class
+        MockContentListFactory.class
     );
     
-    private final List<Object> objectList;
+    private final List<Object> contentList;
     
     ///////////////////////////////////////////////////////////////////////////
     // constructor
     
-    public SimpleObjectListFactory(List<Object> objectList) {
-        this.objectList = objectList;
+    public MockContentListFactory(List<Object> contentList) {
+        this.contentList = contentList;
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -44,8 +44,8 @@ public class SimpleObjectListFactory implements Factory {
     public Object create() {
         LOG.debug("called.");
         try {
-            // return the object list.
-            return objectList;
+            // return the content object list.
+            return contentList;
             
         } catch (Exception e) {
             LOG.error(e.getMessage());

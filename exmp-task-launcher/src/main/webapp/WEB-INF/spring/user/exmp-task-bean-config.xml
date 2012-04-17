@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:task="http://www.springframework.org/schema/task"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+        http://www.springframework.org/schema/task
+        http://www.springframework.org/schema/task/spring-task-3.1.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.1.xsd">
+
+    <context:annotation-config />
+
+    <context:component-scan base-package="org.examproject" />
+
+    <!-- single task -->
+<!--    <bean id="taskExecutor" 
+        class="org.springframework.core.task.SyncTaskExecutor">
+    </bean>-->
+
+    <!-- thread pool task -->
+    <bean id="taskExecutor"
+        class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+        <property name="corePoolSize" value="5" />
+        <property name="maxPoolSize" value="10" />
+        <property name="queueCapacity" value="25" />
+    </bean>
+
+    <task:scheduled-tasks>
+        <task:scheduled
+            ref="facade"
+            method="run"
+            cron="*/10 * * * * ?"
+        />
+    </task:scheduled-tasks>
+    
+    <bean id="facade"
+        class="org.examproject.task.core.Facade">
+        <constructor-arg name="contentListFactory" ref="mockContentListFactory" />
+        <constructor-arg name="job" ref="chainedClosure" />
+    </bean>
+
+    <bean id="chainedClosure"
+        class="org.apache.commons.collections.functors.ChainedClosure">
+        <constructor-arg>
+            <list value-type="java.util.ArrayList">
+                <ref bean="hogeClosure" />
+            </list>
+        </constructor-arg>
+    </bean>
+
+    <bean id="hogeClosure"
+        class="org.examproject.task.service.HogeClosure">
+    </bean>
+
+</beans>

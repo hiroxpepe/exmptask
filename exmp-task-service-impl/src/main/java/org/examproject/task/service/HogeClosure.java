@@ -50,15 +50,19 @@ public class HogeClosure implements Closure {
             DynaBean param = (DynaBean) state.get("param");
             Map<String, HogeDto> values = (Map<String, HogeDto>) param.get("values");
             
-            // get the object item.
-            HogeDto dto = (HogeDto) values.get("item");
+            // get the content object.
+            HogeDto content = (HogeDto) values.get("content");
+            if (content == null) {
+                LOG.warn("content is null.");
+                return;
+            }
             
             // mock task..
-            LOG.info("waitTime: " + dto.getWaitTime().toString());
+            LOG.info("waitTime: " + content.getWaitTime().toString());
             Thread.sleep(
-                Long.parseLong(dto.getWaitTime())
+                Long.parseLong(content.getWaitTime())
             );
-            LOG.info(dto.getName() + " ok.");
+            LOG.info(content.getName() + " ok.");
             
         } catch (Exception e) {
             LOG.error("error: " + e.getMessage());

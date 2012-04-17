@@ -13,7 +13,7 @@
     <context:annotation-config />
 
     <bean id="instance"
-        class="org.examproject.task.core.Worker"
+        class="org.examproject.task.core.SimpleWorker"
         scope="prototype">
     </bean>
 
@@ -33,9 +33,9 @@
         class="org.examproject.task.core.ResultBeanFactory">
     </bean>
 
-    <bean id="simpleObjectListFactory"
-        class="org.examproject.task.core.SimpleObjectListFactory">
-        <constructor-arg name="objectList" ref="objectList" />
+    <bean id="mockContentListFactory"
+        class="org.examproject.task.core.mock.MockContentListFactory">
+        <constructor-arg name="contentList" ref="contentList" />
     </bean>
 
     <!-- mock -->
@@ -43,24 +43,24 @@
         class="org.examproject.task.core.mock.MockJobClosure">
     </bean>
 
-    <bean id="objectList"
+    <bean id="contentList"
         class="java.util.ArrayList">
         <constructor-arg>
-            <list value-type="org.examproject.task.core.mock.MockObject">
-                <ref bean="mockObject1" />
-                <ref bean="mockObject2" />
+            <list value-type="org.examproject.task.core.mock.MockContent">
+                <ref bean="mockContent1" />
+                <ref bean="mockContent2" />
             </list>
         </constructor-arg>
     </bean>
 
-    <bean id="mockObject1"
-        class="org.examproject.task.core.mock.MockObject"
+    <bean id="mockContent1"
+        class="org.examproject.task.core.mock.MockContent"
         scope="prototype">
         <property name="name" value="hoge1" />
     </bean>
 
-    <bean id="mockObject2"
-        class="org.examproject.task.core.mock.MockObject"
+    <bean id="mockContent2"
+        class="org.examproject.task.core.mock.MockContent"
         scope="prototype">
         <property name="name" value="hoge2" />
     </bean>
