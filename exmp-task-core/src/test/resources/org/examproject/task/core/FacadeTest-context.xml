@@ -28,7 +28,7 @@
         <constructor-arg name="resultBeanFactory" ref="resultBeanFactory" />
         <constructor-arg name="contentListFactory" ref="mockContentListFactory" />
         <constructor-arg name="workerBeanId" value="mockWorker" />
-        <constructor-arg name="job" ref="mockJobClosure" />
+        <constructor-arg name="jobClosure" ref="mockJobClosure" />
     </bean>
 
     <bean id="argumentBeanFactory"

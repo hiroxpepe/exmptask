@@ -38,7 +38,7 @@
     <bean id="facade"
         class="org.examproject.task.core.Facade">
         <constructor-arg name="contentListFactory" ref="mockContentListFactory" />
-        <constructor-arg name="job" ref="chainedClosure" />
+        <constructor-arg name="jobClosure" ref="chainedClosure" />
     </bean>
 
     <bean id="chainedClosure"

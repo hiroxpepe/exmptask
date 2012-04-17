@@ -60,7 +60,7 @@ public class Facade implements Runnable {
     
     private final String workerBeanId;
 
-    private final Closure job;
+    private final Closure jobClosure;
 
     private AtomicInteger counter = new AtomicInteger();
             
@@ -78,7 +78,7 @@ public class Facade implements Runnable {
         Factory resultBeanFactory,
         Factory contentListFactory,
         String workerBeanId,
-        Closure job
+        Closure jobClosure
     ) {
         this.argumentBeanFactory = argumentBeanFactory;
         this.stateBeanFactory = stateBeanFactory;
@@ -86,13 +86,13 @@ public class Facade implements Runnable {
         this.resultBeanFactory = resultBeanFactory;
         this.contentListFactory = contentListFactory;
         this.workerBeanId = workerBeanId;
-        this.job = job;
+        this.jobClosure = jobClosure;
     }
     
     public Facade(
         Factory contentListFactory,
         String workerBeanId,
-        Closure job
+        Closure jobClosure
     ) {
         this.argumentBeanFactory = new ArgumentBeanFactory();
         this.stateBeanFactory = new StateBeanFactory();
@@ -100,12 +100,12 @@ public class Facade implements Runnable {
         this.resultBeanFactory = new ResultBeanFactory();
         this.contentListFactory = contentListFactory;
         this.workerBeanId = workerBeanId;
-        this.job = job;
+        this.jobClosure = jobClosure;
     }
     
     public Facade(
         Factory contentListFactory,
-        Closure job
+        Closure jobClosure
     ) {
         this.argumentBeanFactory = new ArgumentBeanFactory();
         this.stateBeanFactory = new StateBeanFactory();
@@ -113,7 +113,7 @@ public class Facade implements Runnable {
         this.resultBeanFactory = new ResultBeanFactory();
         this.contentListFactory = contentListFactory;
         this.workerBeanId = "simpleWorker";
-        this.job = job;
+        this.jobClosure = jobClosure;
     }
     
     ///////////////////////////////////////////////////////////////////////////
@@ -143,7 +143,7 @@ public class Facade implements Runnable {
                 
                 // set the parameter to the beans.
                 DynaBean argument = (DynaBean) argumentBeanFactory.create();
-                argument.set("job",job);
+                argument.set("job",jobClosure);
                 argument.set("state",state);
                 
                 // set the execute count.
