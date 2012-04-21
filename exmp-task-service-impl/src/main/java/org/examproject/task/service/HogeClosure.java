@@ -23,7 +23,7 @@ import org.apache.commons.logging.LogFactory;
 import org.examproject.task.dto.HogeDto;
 
 /**
- * a simple moke class.
+ * a simple mock class.
  * @author hiroxpepe
  */
 public class HogeClosure implements Closure {
@@ -41,10 +41,6 @@ public class HogeClosure implements Closure {
         try{
             // the argument object is dynabean object.
             DynaBean state = (DynaBean) o;
-            if (state == null) {
-                LOG.warn("state is null.");
-                return;
-            }
             
             // get the value map from the param object.
             DynaBean param = (DynaBean) state.get("param");
@@ -58,11 +54,11 @@ public class HogeClosure implements Closure {
             }
             
             // mock task..
-            LOG.info("waitTime: " + content.getWaitTime().toString());
+            LOG.debug("waitTime: " + content.getWaitTime().toString());
             Thread.sleep(
                 Long.parseLong(content.getWaitTime())
             );
-            LOG.info(content.getName() + " ok.");
+            LOG.debug(content.getName() + " ok.");
             
         } catch (Exception e) {
             LOG.error("error: " + e.getMessage());

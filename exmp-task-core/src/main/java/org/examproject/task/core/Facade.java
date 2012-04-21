@@ -15,7 +15,6 @@
 package org.examproject.task.core;
 
 import java.util.Date;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -63,9 +62,7 @@ public class Facade implements Runnable {
     private final Closure jobClosure;
 
     private AtomicInteger counter = new AtomicInteger();
-            
-    private DynaBean result;
-    
+        
     private List<Object> contentList;
     
     ///////////////////////////////////////////////////////////////////////////
@@ -130,34 +127,36 @@ public class Facade implements Runnable {
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
             
-            // initialize the bean for this run.
+            // initialize the content object for this run.
             init();
             
             // set the param for the worker object of the list.
             List<Runnable> workerList = new CopyOnWriteArrayList<Runnable>();
             for (int i = 0; i < contentList.size(); i++) {
-                    
+                 
+                // create the beans of result for the worker. 
+                DynaBean result = (DynaBean) resultBeanFactory.create();
+                
+                // create the beans of state for the worker.
                 DynaBean state = (DynaBean) stateBeanFactory.create();
+
+                // create the beans of argument for the worker.
+                DynaBean argument = (DynaBean) argumentBeanFactory.create();
+                
+                // build the parameter for the worker.
                 state.set("result", result);
                 state.set("param", getParam());
-                
-                // set the parameter to the beans.
-                DynaBean argument = (DynaBean) argumentBeanFactory.create();
                 argument.set("job",jobClosure);
                 argument.set("state",state);
+                argument.set("count", counter.incrementAndGet());
                 
-                // set the execute count.
-                argument.set(
-                    "count",
-                    counter.incrementAndGet()
-                );
-                
-                // set the argument object for worker object.
+                // set the argument object for the worker.
                 Runnable worker = (Runnable) context.getBean(
                     workerBeanId,
                     argument
                 );
                 
+                // add the worker to the list.
                 workerList.add(worker);
             }
             
@@ -186,9 +185,6 @@ public class Facade implements Runnable {
     // private methods
     
     private void init() {
-        
-        // create the beans of result. 
-        result = (DynaBean) resultBeanFactory.create();
         
         // get the content object list.
         contentList = (List<Object>) contentListFactory.create();

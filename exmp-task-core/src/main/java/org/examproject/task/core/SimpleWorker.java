@@ -69,6 +69,12 @@ public class SimpleWorker implements Runnable {
             LOG.error(msg);
             throw new IllegalArgumentException(msg);
         }
+        
+        // the state object is must be set for run.
+        if (state == null) {
+            LOG.warn("state is null.");
+            return;
+        }
 
         String threadName = Thread.currentThread().getName();
         LOG.info("▼ " + threadName + " beginning worker on " + count);
