@@ -35,7 +35,7 @@ public class SimpleWorkerTest {
     @Inject
     @Named(value="argumentBeanFactory")
     private Factory argumentBeanFactory;
-    
+
     @Inject
     @Named(value="stateBeanFactory")
     private Factory stateBeanFactory;
@@ -43,7 +43,7 @@ public class SimpleWorkerTest {
     @Inject
     @Named(value="paramBeanFactory")
     private Factory paramBeanFactory;
-    
+
     @Inject
     @Named(value="resultBeanFactory")
     private Factory resultBeanFactory;
@@ -74,7 +74,7 @@ public class SimpleWorkerTest {
     @Test
     public void testExecute() {
         System.out.println("execute");
-        
+
         DynaBean argument = (DynaBean) argumentBeanFactory.create();
         DynaBean state = (DynaBean) stateBeanFactory.create();
         DynaBean param = (DynaBean) paramBeanFactory.create();

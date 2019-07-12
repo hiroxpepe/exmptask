@@ -46,23 +46,23 @@
     <bean id="resultBeanFactory"
         class="org.examproject.task.core.ResultBeanFactory">
     </bean>
-    
+
     <bean id="mockContentListFactory"
         class="org.examproject.task.core.mock.MockContentListFactory">
         <constructor-arg name="contentList" ref="contentList" />
     </bean>
-    
+
     <!-- mock job -->
     
     <bean id="mockWorker"
         class="org.examproject.task.core.mock.MockWorker"
         scope="prototype">
     </bean>
-    
+
     <bean id="mockJobClosure"
         class="org.examproject.task.core.mock.MockJobClosure">
     </bean>
-    
+
     <bean id="contentList"
         class="java.util.ArrayList">
         <constructor-arg>

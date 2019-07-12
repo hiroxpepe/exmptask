@@ -1,10 +1,10 @@
-/* 
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * a worker object is only to run the job object.
- * 
+ *
  * @author hiroxpepe
  */
 @Component(value="simpleWorker")
@@ -35,21 +35,21 @@ public class SimpleWorker implements Runnable {
     );
 
     private final DynaBean argument;
-    
+
     ///////////////////////////////////////////////////////////////////////////
     // constructor
 
     public SimpleWorker() {
         argument = null;
     }
-    
+
     public SimpleWorker(DynaBean argument) {
         this.argument = argument;
     }
-    
+
     ///////////////////////////////////////////////////////////////////////////
     // public methods
-    
+
     @Override
     public void run() {
         LOG.debug("called.");
@@ -69,7 +69,7 @@ public class SimpleWorker implements Runnable {
             LOG.error(msg);
             throw new IllegalArgumentException(msg);
         }
-        
+
         // the state object is must be set for run.
         if (state == null) {
             LOG.warn("state is null.");
@@ -78,7 +78,7 @@ public class SimpleWorker implements Runnable {
 
         String threadName = Thread.currentThread().getName();
         LOG.info("▼ " + threadName + " beginning worker on " + count);
-        
+
         try {
             // execute the job object given the state object.
             job.execute(
@@ -90,7 +90,7 @@ public class SimpleWorker implements Runnable {
             LOG.error("exception occurred. " + e.getMessage());
             throw new RuntimeException(e);
         }
-        
+
         LOG.info("▲ " + threadName + " completed worker on " + count);
     }
 }

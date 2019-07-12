@@ -6,9 +6,9 @@
         http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
         http://www.springframework.org/schema/context
         http://www.springframework.org/schema/context/spring-context-3.1.xsd">
-    
+
     <!-- mock content -->
-    
+
     <bean id="mockContentListFactory"
         class="org.examproject.task.core.mock.MockContentListFactory">
         <constructor-arg name="contentList" ref="contentList" />
@@ -45,28 +45,28 @@
         <property name="name" value="hoge2" />
         <property name="waitTime" value="500" />
     </bean>
-    
+
     <bean id="hogeDto3"
         class="org.examproject.task.dto.HogeDto"
         scope="prototype">
         <property name="name" value="hoge3" />
         <property name="waitTime" value="1000" />
     </bean>
-    
+
     <bean id="hogeDto4"
         class="org.examproject.task.dto.HogeDto"
         scope="prototype">
         <property name="name" value="hoge4" />
         <property name="waitTime" value="2500" />
     </bean>
-    
+
     <bean id="hogeDto5"
         class="org.examproject.task.dto.HogeDto"
         scope="prototype">
         <property name="name" value="hoge5" />
         <property name="waitTime" value="500" />
     </bean>
-    
+
     <bean id="hogeDto6"
         class="org.examproject.task.dto.HogeDto"
         scope="prototype">
@@ -80,21 +80,21 @@
         <property name="name" value="hoge7" />
         <property name="waitTime" value="500" />
     </bean>
-    
+
     <bean id="hogeDto8"
         class="org.examproject.task.dto.HogeDto"
         scope="prototype">
         <property name="name" value="hoge8" />
         <property name="waitTime" value="1000" />
     </bean>
-    
+
     <bean id="hogeDto9"
         class="org.examproject.task.dto.HogeDto"
         scope="prototype">
         <property name="name" value="hoge9" />
         <property name="waitTime" value="2500" />
     </bean>
-    
+
     <bean id="hogeDto10"
         class="org.examproject.task.dto.HogeDto"
         scope="prototype">

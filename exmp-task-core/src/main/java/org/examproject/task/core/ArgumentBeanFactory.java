@@ -35,14 +35,14 @@ public class ArgumentBeanFactory implements Factory {
 
     ///////////////////////////////////////////////////////////////////////////
     // public methods
-    
+
     @Override
     public Object create() {
         LOG.debug("called.");
         try {
             // create a dynaproperty array.
             DynaProperty[] props = new DynaProperty[3];
-            
+
             // create a dynaproperty object.
             props[0] = new DynaProperty(
                 "count",
@@ -56,20 +56,20 @@ public class ArgumentBeanFactory implements Factory {
                 "state",
                 DynaBean.class
             );
-            
+
             // create a dynaclass object.
             DynaClass clazz = new BasicDynaClass(
-                "argument", 
+                "argument",
                 BasicDynaBean.class,
                 props
             );
-            
+
             // create a dynabean object.
             DynaBean bean = clazz.newInstance();
-            
+
             // return the dynabean object.
             return bean;
-            
+
         } catch(Exception e) {
             LOG.error(e.getMessage());
             throw new RuntimeException(e);

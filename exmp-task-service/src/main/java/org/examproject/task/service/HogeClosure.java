@@ -1,10 +1,10 @@
-/* 
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -34,32 +34,32 @@ public class HogeClosure implements Closure {
 
     ///////////////////////////////////////////////////////////////////////////
     // public methods
-    
+
     @Override
     public void execute(Object o) {
         LOG.debug("called.");
         try{
             // the argument object is dynabean object.
             DynaBean state = (DynaBean) o;
-            
+
             // get the value map from the param object.
             DynaBean param = (DynaBean) state.get("param");
             Map<String, HogeDto> values = (Map<String, HogeDto>) param.get("values");
-            
+
             // get the content object.
             HogeDto content = (HogeDto) values.get("content");
             if (content == null) {
                 LOG.warn("content is null.");
                 return;
             }
-            
+
             // mock task..
             LOG.debug("waitTime: " + content.getWaitTime().toString());
             Thread.sleep(
                 Long.parseLong(content.getWaitTime())
             );
             LOG.debug(content.getName() + " ok.");
-            
+
         } catch (Exception e) {
             LOG.error("error: " + e.getMessage());
             throw new RuntimeException(e);
