@@ -14,29 +14,16 @@
 
 package org.examproject.task.dto;
 
+import lombok.Data;
+
 /**
  * @author hiroxpepe
  */
+@Data
 public class HogeDto {
 
     private String name;
 
     private String waitTime;
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getWaitTime() {
-        return waitTime;
-    }
-
-    public void setWaitTime(String waitTime) {
-        this.waitTime = waitTime;
-    }
 
 }

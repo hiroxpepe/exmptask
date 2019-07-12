@@ -53,7 +53,7 @@
     </bean>
 
     <!-- mock job -->
-    
+
     <bean id="mockWorker"
         class="org.examproject.task.core.mock.MockWorker"
         scope="prototype">
