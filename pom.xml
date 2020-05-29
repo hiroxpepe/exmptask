@@ -4,15 +4,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.examproject</groupId>
-    <artifactId>exmptask</artifactId>
+    <artifactId>exmp-task</artifactId>
     <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.1</version>
     <name>exmptask</name>
 
     <modules>
-        <module>exmp-task-launcher</module>
-        <module>exmp-task-service</module>
-        <module>exmp-task-core</module>
+        <module>launcher</module>
+        <module>service</module>
+        <module>core</module>
     </modules>
 
 </project>
