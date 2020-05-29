@@ -1,9 +1,5 @@
 .settings
-.project
-.classpath
-.factorypath
-.code-workspace
 app-db
 logs
 target
-nbactions.xml
+
