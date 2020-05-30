@@ -13,7 +13,7 @@
     </appender>
 
     <appender name="file" class="org.apache.log4j.RollingFileAppender">
-        <param name="File" value="${catalina.base}/logs/exmptask.log"/>
+        <param name="File" value="./logs/exmp-task.log"/>
         <param name="Append" value="true"/>
         <param name="MaxFileSize" value="1MB"/>
         <param name="MaxBackupIndex" value="10"/>

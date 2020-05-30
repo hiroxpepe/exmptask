@@ -14,30 +14,26 @@
 
 package org.examproject.task.core;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.BasicDynaBean;
 import org.apache.commons.beanutils.BasicDynaClass;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.DynaClass;
 import org.apache.commons.beanutils.DynaProperty;
 import org.apache.commons.collections.Factory;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author hiroxpepe
  */
+@Slf4j
 public class StateBeanFactory implements Factory {
-
-    private final Log LOG = LogFactory.getLog(
-        StateBeanFactory.class
-    );
 
     ///////////////////////////////////////////////////////////////////////////
     // public methods
 
     @Override
     public Object create() {
-        LOG.debug("called.");
+        log.debug("called.");
         try {
             // create a dynaproperty array.
             DynaProperty[] props = new DynaProperty[2];
@@ -66,7 +62,7 @@ public class StateBeanFactory implements Factory {
             return bean;
 
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            log.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }

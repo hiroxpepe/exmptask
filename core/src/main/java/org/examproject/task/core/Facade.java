@@ -22,24 +22,20 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicInteger;
 import javax.inject.Inject;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.collections.Closure;
 import org.apache.commons.collections.Factory;
 import org.apache.commons.lang.time.StopWatch;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 
 /**
  * @author hiroxpepe
  */
+@Slf4j
 @Service
 public class Facade implements Runnable {
-
-    private final Log LOG = LogFactory.getLog(
-        Facade.class
-    );
 
     @Inject
     private final ApplicationContext context = null;
@@ -118,11 +114,11 @@ public class Facade implements Runnable {
 
     @Override
     public void run() {
-        LOG.debug("called.");
+        log.debug("called.");
 
         try {
-            LOG.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> facade begin.");
-            LOG.info("processing at " + new Date());
+            log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> facade begin.");
+            log.info("processing at " + new Date());
 
             StopWatch stopWatch = new StopWatch();
             stopWatch.start();
@@ -169,12 +165,12 @@ public class Facade implements Runnable {
 
             stopWatch.stop();
 
-            LOG.info("execute time: " + stopWatch.getTime() + " msec");  
-            LOG.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< facade end.");
+            log.info("execute time: " + stopWatch.getTime() + " msec");  
+            log.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< facade end.");
 
         } catch (Exception e) {
-            LOG.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< facade error.");
-            LOG.error("exception occurred. " + e.getMessage());
+            log.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< facade error.");
+            log.error("exception occurred. " + e.getMessage());
 
             // TODO: final strategy of the error!
             throw new RuntimeException(e);

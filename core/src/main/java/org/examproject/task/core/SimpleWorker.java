@@ -14,10 +14,9 @@
 
 package org.examproject.task.core;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.collections.Closure;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -26,13 +25,10 @@ import org.springframework.stereotype.Component;
  *
  * @author hiroxpepe
  */
+@Slf4j
 @Component(value="simpleWorker")
 @Scope(value="prototype")
 public class SimpleWorker implements Runnable {
-
-    private final Log LOG = LogFactory.getLog(
-        SimpleWorker.class
-    );
 
     private final DynaBean argument;
 
@@ -52,9 +48,9 @@ public class SimpleWorker implements Runnable {
 
     @Override
     public void run() {
-        LOG.debug("called.");
+        log.debug("called.");
         if (argument == null) {
-            LOG.warn("argument is null.");
+            log.warn("argument is null.");
             return;
         }
 
@@ -66,18 +62,18 @@ public class SimpleWorker implements Runnable {
         // the job object is must be set.
         if (job == null) {
             String msg = "job is must be set.";
-            LOG.error(msg);
+            log.error(msg);
             throw new IllegalArgumentException(msg);
         }
 
         // the state object is must be set for run.
         if (state == null) {
-            LOG.warn("state is null.");
+            log.warn("state is null.");
             return;
         }
 
         String threadName = Thread.currentThread().getName();
-        LOG.info("▼ " + threadName + " beginning worker on " + count);
+        log.info("▼ " + threadName + " beginning worker on " + count);
 
         try {
             // execute the job object given the state object.
@@ -86,11 +82,11 @@ public class SimpleWorker implements Runnable {
             );
 
         } catch (Exception e) {
-            LOG.info("▲ " + threadName + " error worker on " + count);
-            LOG.error("exception occurred. " + e.getMessage());
+            log.info("▲ " + threadName + " error worker on " + count);
+            log.error("exception occurred. " + e.getMessage());
             throw new RuntimeException(e);
         }
 
-        LOG.info("▲ " + threadName + " completed worker on " + count);
+        log.info("▲ " + threadName + " completed worker on " + count);
     }
 }

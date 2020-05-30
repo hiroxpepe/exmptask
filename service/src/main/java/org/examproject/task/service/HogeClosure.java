@@ -14,30 +14,27 @@
 
 package org.examproject.task.service;
 
-import java.util.List;
 import java.util.Map;
+
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.collections.Closure;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
 import org.examproject.task.dto.HogeDto;
 
 /**
  * a simple mock class.
  * @author hiroxpepe
  */
+@Slf4j
 public class HogeClosure implements Closure {
-
-    private static final Log LOG = LogFactory.getLog(
-        HogeClosure.class
-    );
 
     ///////////////////////////////////////////////////////////////////////////
     // public methods
 
     @Override
     public void execute(Object o) {
-        LOG.debug("called.");
+        log.info("called.");
         try{
             // the argument object is dynabean object.
             DynaBean state = (DynaBean) o;
@@ -49,19 +46,19 @@ public class HogeClosure implements Closure {
             // get the content object.
             HogeDto content = (HogeDto) values.get("content");
             if (content == null) {
-                LOG.warn("content is null.");
+                log.warn("content is null.");
                 return;
             }
 
             // mock task..
-            LOG.debug("waitTime: " + content.getWaitTime().toString());
+            log.info("waitTime: " + content.getWaitTime().toString());
             Thread.sleep(
                 Long.parseLong(content.getWaitTime())
             );
-            LOG.debug(content.getName() + " ok.");
+            log.info(content.getName() + " ok.");
 
         } catch (Exception e) {
-            LOG.error("error: " + e.getMessage());
+            log.error("error: " + e.getMessage());
             throw new RuntimeException(e);
         }
 

@@ -15,18 +15,15 @@
 package org.examproject.task.core.mock;
 
 import java.util.List;
+
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.Factory;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author hiroxpepe
  */
+@Slf4j
 public class MockContentListFactory implements Factory {
-
-    private final Log LOG = LogFactory.getLog(
-        MockContentListFactory.class
-    );
 
     private final List<Object> contentList;
 
@@ -42,13 +39,13 @@ public class MockContentListFactory implements Factory {
 
     @Override
     public Object create() {
-        LOG.debug("called.");
+        log.debug("called.");
         try {
             // return the content object list.
             return contentList;
 
         } catch (Exception e) {
-            LOG.error(e.getMessage());
+            log.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }

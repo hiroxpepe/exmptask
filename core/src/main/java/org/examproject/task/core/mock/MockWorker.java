@@ -14,19 +14,15 @@
 
 package org.examproject.task.core.mock;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.collections.Closure;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author hiroxpepe
  */
+@Slf4j
 public class MockWorker implements Runnable {
-
-    private final Log LOG = LogFactory.getLog(
-        MockWorker.class
-    );
 
     private final DynaBean argument;
 
@@ -42,7 +38,7 @@ public class MockWorker implements Runnable {
 
     @Override
     public void run() {
-        LOG.info("called.");
+        log.info("called.");
         try {
 
             // get the state object from the parameter.

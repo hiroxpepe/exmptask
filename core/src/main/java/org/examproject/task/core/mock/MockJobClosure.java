@@ -14,27 +14,23 @@
 
 package org.examproject.task.core.mock;
 
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.Closure;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 
 /**
  * @author hiroxpepe
  */
+@Slf4j
 public class MockJobClosure implements Closure {
-
-    private final Log LOG = LogFactory.getLog(
-        MockJobClosure.class
-    );
 
     ///////////////////////////////////////////////////////////////////////////
     // public methods
 
     @Override
     public void execute(Object o) {
-        LOG.info("called.");
+        log.info("called.");
         try {
-            System.out.println("mock job.");
+            log.info("mock job.");
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
