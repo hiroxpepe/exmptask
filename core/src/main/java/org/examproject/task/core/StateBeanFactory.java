@@ -36,35 +36,34 @@ public class StateBeanFactory implements Factory {
         log.debug("called.");
         try {
             // create a dynaproperty array.
-            DynaProperty[] props = new DynaProperty[2];
+            DynaProperty[] _props = new DynaProperty[2];
 
             // create a dynaproperty object.
-            props[0] = new DynaProperty(
+            _props[0] = new DynaProperty(
                 "param",
                 DynaBean.class
             );
-            props[1] = new DynaProperty(
+            _props[1] = new DynaProperty(
                 "result",
                 DynaBean.class
             );
 
             // create a dynaclass object.
-            DynaClass clazz = new BasicDynaClass(
+            DynaClass _clazz = new BasicDynaClass(
                 "state",
                 BasicDynaBean.class,
-                props
+                _props
             );
 
             // create a dynabean object.
-            DynaBean bean = clazz.newInstance();
+            DynaBean _bean = _clazz.newInstance();
 
             // return the dynabean object.
-            return bean;
+            return _bean;
 
         } catch (Exception e) {
             log.error(e.getMessage());
             throw new RuntimeException(e);
         }
     }
-
 }

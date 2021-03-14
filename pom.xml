@@ -6,8 +6,8 @@
     <groupId>org.examproject</groupId>
     <artifactId>exmp-task</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1</version>
-    <name>exmptask</name>
+    <version>1.0.2</version>
+    <name>project</name>
 
     <modules>
         <module>launcher</module>

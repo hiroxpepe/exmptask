@@ -14,7 +14,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * @author hiroxpepe
@@ -54,5 +53,4 @@ public class FacadeTest {
         System.out.println("run");
         instance.run();
     }
-
 }

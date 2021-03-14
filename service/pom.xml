@@ -6,8 +6,8 @@
     <groupId>org.examproject</groupId>
     <artifactId>exmp-task-service</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1</version>
-    <name>exmp-task-service</name>
+    <version>1.0.2</version>
+    <name>service</name>
 
     <properties>
         <spring.version>5.2.6.RELEASE</spring.version>

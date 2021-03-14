@@ -49,5 +49,4 @@ public class MockContentListFactory implements Factory {
             throw new RuntimeException(e);
         }
     }
-
 }

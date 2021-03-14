@@ -1,10 +1,10 @@
-/* 
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,34 +37,34 @@ public class ArgumentBeanFactory implements Factory {
         log.debug("called.");
         try {
             // create a dynaproperty array.
-            DynaProperty[] props = new DynaProperty[3];
+            DynaProperty[] _props = new DynaProperty[3];
 
             // create a dynaproperty object.
-            props[0] = new DynaProperty(
+            _props[0] = new DynaProperty(
                 "count",
                 Integer.class
             );
-            props[1] = new DynaProperty(
+            _props[1] = new DynaProperty(
                 "job",
                 Closure.class
             );
-            props[2] = new DynaProperty(
+            _props[2] = new DynaProperty(
                 "state",
                 DynaBean.class
             );
 
             // create a dynaclass object.
-            DynaClass clazz = new BasicDynaClass(
+            DynaClass _clazz = new BasicDynaClass(
                 "argument",
                 BasicDynaBean.class,
-                props
+                _props
             );
 
             // create a dynabean object.
-            DynaBean bean = clazz.newInstance();
+            DynaBean _bean = _clazz.newInstance();
 
             // return the dynabean object.
-            return bean;
+            return _bean;
 
         } catch(Exception e) {
             log.error(e.getMessage());
