@@ -6,8 +6,8 @@
     <groupId>org.examproject</groupId>
     <artifactId>exmp-task-core</artifactId>
     <packaging>jar</packaging>
-    <version>1.0.1</version>
-    <name>exmp-task-core</name>
+    <version>1.0.2</version>
+    <name>core</name>
 
     <properties>
         <spring.version>5.2.6.RELEASE</spring.version>

@@ -6,8 +6,8 @@
     <groupId>org.examproject</groupId>
     <artifactId>exmp-task-launcher</artifactId>
     <packaging>war</packaging>
-    <version>1.0.1</version>
-    <name>exmp-task-launcher</name>
+    <version>1.0.2</version>
+    <name>launcher</name>
 
     <properties>
         <spring.version>5.2.6.RELEASE</spring.version>
@@ -68,7 +68,7 @@
             <artifactId>logback-classic</artifactId>
             <version>${logback.version}</version>
         </dependency>
-        
+
         <!-- Servlet -->
         <dependency>
             <groupId>javax.servlet</groupId>

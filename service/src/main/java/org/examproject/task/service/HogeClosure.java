@@ -37,25 +37,23 @@ public class HogeClosure implements Closure {
         log.info("called.");
         try{
             // the argument object is dynabean object.
-            DynaBean state = (DynaBean) o;
+            DynaBean _state = (DynaBean) o;
 
-            // get the value map from the param object.
-            DynaBean param = (DynaBean) state.get("param");
-            Map<String, HogeDto> values = (Map<String, HogeDto>) param.get("values");
+            // get the value map from the _param object.
+            DynaBean _param = (DynaBean) _state.get("param");
+            Map<String, HogeDto> _values = (Map<String, HogeDto>) _param.get("values");
 
-            // get the content object.
-            HogeDto content = (HogeDto) values.get("content");
-            if (content == null) {
+            // get the _content object.
+            HogeDto _content = (HogeDto) _values.get("content");
+            if (_content == null) {
                 log.warn("content is null.");
                 return;
             }
 
             // mock task..
-            log.info("waitTime: " + content.getWaitTime().toString());
-            Thread.sleep(
-                Long.parseLong(content.getWaitTime())
-            );
-            log.info(content.getName() + " ok.");
+            log.info("waitTime: " + _content.getWaitTime());
+            Thread.sleep(Long.parseLong(_content.getWaitTime()));
+            log.info(_content.getName() + " ok.");
 
         } catch (Exception e) {
             log.error("error: " + e.getMessage());

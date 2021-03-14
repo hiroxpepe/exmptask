@@ -1,10 +1,10 @@
-/* 
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  *      http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -57,7 +57,7 @@ public class Facade implements Runnable {
 
     private final Closure jobClosure;
 
-    private AtomicInteger counter = new AtomicInteger();
+    private final AtomicInteger counter = new AtomicInteger();
 
     private List<Object> contentList;
 
@@ -115,57 +115,53 @@ public class Facade implements Runnable {
     @Override
     public void run() {
         log.debug("called.");
-
         try {
             log.info(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> facade begin.");
             log.info("processing at " + new Date());
 
-            StopWatch stopWatch = new StopWatch();
-            stopWatch.start();
+            StopWatch _stopWatch = new StopWatch();
+            _stopWatch.start();
 
             // initialize the content object for this run.
             init();
 
-            // set the param for the worker object of the list.
-            List<Runnable> workerList = new CopyOnWriteArrayList<Runnable>();
-            for (int i = 0; i < contentList.size(); i++) {
+            // set the _param for the _worker object of the list.
+            List<Runnable> _workerList = new CopyOnWriteArrayList<>();
+            for (int _idx = 0; _idx < contentList.size(); _idx++) {
 
-                // create the beans of result for the worker.
-                DynaBean result = (DynaBean) resultBeanFactory.create();
+                // create the beans of _result for the _worker.
+                DynaBean _result = (DynaBean) resultBeanFactory.create();
 
-                // create the beans of state for the worker.
-                DynaBean state = (DynaBean) stateBeanFactory.create();
+                // create the beans of _state for the _worker.
+                DynaBean _state = (DynaBean) stateBeanFactory.create();
 
-                // create the beans of argument for the worker.
-                DynaBean argument = (DynaBean) argumentBeanFactory.create();
+                // create the beans of _argument for the _worker.
+                DynaBean _argument = (DynaBean) argumentBeanFactory.create();
 
-                // build the parameter for the worker.
-                state.set("result", result);
-                state.set("param", getParam());
-                argument.set("job",jobClosure);
-                argument.set("state",state);
-                argument.set("count", counter.incrementAndGet());
+                // build the parameter for the _worker.
+                _state.set("result", _result);
+                _state.set("param", getParam());
+                _argument.set("job", jobClosure);
+                _argument.set("state", _state);
+                _argument.set("count", counter.incrementAndGet());
 
-                // set the argument object for the worker.
-                Runnable worker = (Runnable) context.getBean(
-                    workerBeanId,
-                    argument
+                // set the _argument object for the _worker.
+                Runnable _worker = (Runnable) context.getBean(workerBeanId,
+                    _argument
                 );
 
-                // add the worker to the list.
-                workerList.add(worker);
+                // add the _worker to the list.
+                _workerList.add(_worker);
             }
 
-            // run the all of the worker object.
-            for (int i = 0; i < workerList.size(); i++) {
-                executor.execute(
-                    workerList.get(i)
-                );
+            // run the all of the _worker object.
+            for (int _idx = 0; _idx < _workerList.size(); _idx++) {
+                executor.execute(_workerList.get(_idx));
             }
 
-            stopWatch.stop();
+            _stopWatch.stop();
 
-            log.info("execute time: " + stopWatch.getTime() + " msec");  
+            log.info("execute time: " + _stopWatch.getTime() + " msec");
             log.info("<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<< facade end.");
 
         } catch (Exception e) {
@@ -189,14 +185,13 @@ public class Facade implements Runnable {
     private DynaBean getParam() {
 
         // get the content object of the current.
-        Object o = contentList.remove(0);
+        Object _obj = contentList.remove(0);
 
         // set the object to map.
-        DynaBean param = (DynaBean) paramBeanFactory.create();
-        Map<String, Object> values = (Map<String, Object>) param.get("values");
-        values.put("content", o);
+        DynaBean _param = (DynaBean) paramBeanFactory.create();
+        Map<String, Object> _values = (Map<String, Object>) _param.get("values");
+        _values.put("content", _obj);
 
-        return param;
+        return _param;
     }
-
 }

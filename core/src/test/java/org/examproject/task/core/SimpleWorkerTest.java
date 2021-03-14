@@ -18,7 +18,6 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
 
 /**
  * @author hiroxpepe
@@ -75,21 +74,20 @@ public class SimpleWorkerTest {
     public void testExecute() {
         System.out.println("execute");
 
-        DynaBean argument = (DynaBean) argumentBeanFactory.create();
-        DynaBean state = (DynaBean) stateBeanFactory.create();
-        DynaBean param = (DynaBean) paramBeanFactory.create();
-        DynaBean result = (DynaBean) resultBeanFactory.create();
+        DynaBean _argument = (DynaBean) argumentBeanFactory.create();
+        DynaBean _state = (DynaBean) stateBeanFactory.create();
+        DynaBean _param = (DynaBean) paramBeanFactory.create();
+        DynaBean _result = (DynaBean) resultBeanFactory.create();
 
-        AtomicInteger counter = new AtomicInteger();
+        AtomicInteger _counter = new AtomicInteger();
 
-        state.set("param", param);
-        state.set("result", result);
-        argument.set("count", counter.incrementAndGet());
-        argument.set("job", job);
-        argument.set("state", state);
+        _state.set("param", _param);
+        _state.set("result", _result);
+        _argument.set("count", _counter.incrementAndGet());
+        _argument.set("job", job);
+        _argument.set("state", _state);
 
-        instance = (Runnable) context.getBean("instance", argument);
+        instance = (Runnable) context.getBean("instance", _argument);
         instance.run();
     }
-
 }

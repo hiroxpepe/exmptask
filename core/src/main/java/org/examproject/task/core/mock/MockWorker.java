@@ -41,20 +41,18 @@ public class MockWorker implements Runnable {
         log.info("called.");
         try {
 
-            // get the state object from the parameter.
-            DynaBean state = (DynaBean) argument.get(
+            // get the _state object from the parameter.
+            DynaBean _state = (DynaBean) argument.get(
                 "state"
             );
 
-            // get the job object from the parameter.
-            Closure job = (Closure) argument.get(
+            // get the _job object from the parameter.
+            Closure _job = (Closure) argument.get(
                 "job"
             );
 
-            // executes it by passing a state object to the job object.
-            job.execute(
-                state
-            );
+            // executes it by passing a _state object to the _job object.
+            _job.execute(_state);
 
         } catch (Exception e) {
             throw new RuntimeException(e);
